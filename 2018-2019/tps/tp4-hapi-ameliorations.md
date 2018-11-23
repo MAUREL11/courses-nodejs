@@ -69,7 +69,7 @@ Hapi-boilerplate
     ├── routes          # Les routes de l'application
     ├── services        # différents services
     ├── models          # models de base de données
-    ├── plugins         # Plugins internes au projet
+    ├── plugins         # Configuration de plugins / ou plugins internes du projet
     └── schemas         # Schémas Joi
 ```
 **Vous ne verrez pas tout les dossiers au début, nous allons en rajouter dans les prochains TP's**
@@ -109,37 +109,30 @@ Le résultat des requêtes de récupération utilisateurs (un ou tous) ne devron
 ### Organisation
 
 - Essayez de toujours utiliser async/await . Ceci vous permettra de facilement capturer une erreur dans le `catch` que vous n'avez pas géré sans faire planter le serveur.
-- Les routes ne doivent servir qu'à appeler différents services pour réaliser la tâche demandée. Le squelette des plugins que je vous conseille est le suivant :
+- Les routes ne doivent servir qu'à appeler différents services pour réaliser la tâche demandée.
 
-```
+### Services
+
+
+
+```javascript
 'use strict';
 
-const Promise   = require('bluebird');
+const { Service }        = require('schmervice');
 
-// contient toutes les méthodes privées de votre plugin
-const internals = {};
+module.exports = class UserService extends Service {
 
-const externals = {
-    pubFunc() {
-        return new Promise((resolve, reject) => {
+  async initialize(){ // CALLED ON SERVER INITIALIZATION (onPreStart)
 
-        });
-    },
-    register(server, options, next) {
-        internals.server    = server.root;
-        internals.settings  = options;
+    // set up stuff here
+  }
 
-        // à répéter autant de fois
-        // que vous avez de méthodes publiques
-        server.expose('pubFunc', externals.pubFunc);
+  async teardown(){ // CALLED ON SERVER
 
-        next();
-    },
-};
 
-externals.register.attributes = {
-    name    : 'votrepluginavecunnomunique',
-};
+  }
 
-module.exports.register = externals.register;
+
+
+}
 ```
