@@ -287,7 +287,7 @@ console.log('after forEach');
 
 try {
 
-  const val = myPromiseFunction();
+  const val = await myPromiseFunction();
   console.log(val);
 }
 catch(error){

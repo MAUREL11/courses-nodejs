@@ -22,7 +22,7 @@
 
 <br>
 
-- **API Mail** : Relié via socket.io au premier service, il va vous permettre d'envoyer un email aux utilisateurs lors de l'inscription et de l'oubli du mot de passe.
+- **API Mail** : Relié via RabbitMQ au premier service, il va vous permettre d'envoyer un email aux utilisateurs lors de l'inscription et de l'oubli du mot de passe.
     - Email de création de l'utilisateur
     - Email de regénération du mot de passe
     - Email de modification de l'utilisateur
@@ -31,7 +31,7 @@ Pour les deux projets vous devrez respecter les styleguides fournies lors du TP1
 
 ## Avant de commencer
 
-Avant de commencer ce TP, vous devrez terminer le cours nodeschool `make-me-hapi` (mis à part les deux derniers cours qui sont cookies et authentication) et récupérer dans votre repository git le projet `hapi-boilerplate` servant de base à ce TP et au projet fil rouge. (trouvable à cette adresse : https://github.com/hapipal/boilerplate)
+Avant de commencer ce TP, vous devrez terminer le cours nodeschool `make-me-hapi` (mis à part les deux derniers cours qui sont cookies et authentication) et initialisé une nouveau projet hpal servant de base à ce TP et au projet fil rouge. (trouvable à cette adresse : https://github.com/hapipal/boilerplate)
 
 ## Swagger
 

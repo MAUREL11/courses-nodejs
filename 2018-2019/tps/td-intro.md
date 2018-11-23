@@ -31,14 +31,14 @@ Pour l'installation de nvm, je vous recommande de voir tout ce qui est indiqué 
 **Attention** : tous les TP seront fait sur la version 8 LTS (long support) de NodeJS. Il s'agit de la version `8.9.0` au moment de la rédaction de ce TD.
 
 ```
-nvm install v8
-nvm use v8
+nvm install 8
+nvm use 8
 ```
 
 Dans le doute, pensez à mettre cette version en version par défaut :
 
 ```
-nvm alias default v8
+nvm alias default 8
 ```
 
 ## NodeSchool.io
