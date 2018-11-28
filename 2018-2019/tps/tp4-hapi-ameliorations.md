@@ -113,7 +113,16 @@ Le résultat des requêtes de récupération utilisateurs (un ou tous) ne devron
 
 ### Services
 
+Utilisant [`Schmervice`](https://github.com/hapipal/schmervice) de hapipal.
 
+
+ - Server methods
+ - Caching intégré
+
+
+ #### Example
+
+Dans le dossier `services` créer un fichier appelé `user.js` contenant le code suivant:
 
 ```javascript
 'use strict';
@@ -125,14 +134,37 @@ module.exports = class UserService extends Service {
   async initialize(){ // CALLED ON SERVER INITIALIZATION (onPreStart)
 
     // set up stuff here
+    this.users = [];
   }
 
-  async teardown(){ // CALLED ON SERVER
+  async teardown(){ // CALLED ON SERVER STOP (OnPostStop)
 
-
+   // tear down stuff here
   }
 
+  hello(user){
 
+    return `Hello ${user.firstName}`
+  }
+
+  add(user){
+
+    this.users.push(user);
+  }
 
 }
+```
+
+Vous pouvez accéder a vos service depuis `request` et `server` avec la methode `.services`
+
+Par example pour récupérer notre service utilisateur depuis une route nous aurons le code qui suit:
+
+```javascript
+
+ (request, h) => {
+
+   const { userService } = request.services();
+
+   return userService.hello({ firstName: 'John'});
+ }
 ```

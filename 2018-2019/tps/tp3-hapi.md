@@ -35,9 +35,9 @@ https://github.com/hapipal/boilerplate
 
 Vous trouverez toute la documentation quand à son fonctionnement directement sur son repo git.
 
-### Plugins de base
+### Plugins
 
-Les plugins installés de base sur ce projet sont les suivants :
+Vous trouverez de multiples plugins dans l'ecosystème hapi et hapipal, quelques-uns qui peuvent etre utiles sont:
 
 - **Good** : Permet de logger facilement du contenu au sein du serveur en lieu et place du traditionnel `console.log` : https://github.com/hapijs/good
 - **Blipp** : Affiche dans la console, lors du démarrage du serveur, les routes disponibles : https://github.com/danielb2/blipp
