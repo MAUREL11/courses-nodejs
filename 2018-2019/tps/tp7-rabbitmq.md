@@ -1,4 +1,4 @@
-# TP 8 : Socket.io et plugins (deprecated)
+# TP 8 : RabbitMQ et plugins
 
 <center>
 ![tp8](../../resources/tp8.jpg)
@@ -6,13 +6,9 @@
 
 ## Introduction
 
-Socket.io est une implémentation du protocole websocket au sein de node.JS.
-Comparé à une connexion HTTP standard, le protocole websocket effectue qu'une seule connexion entre le client et le serveur.
-Par la suite, les messages transitent grâce à des channels et des événements.
+RabbitMQ est un broker de message se basant sur le standard AMQP afin de faire communiquer plusieurs clients entre eux. AMQP est un protocol tout comme le HTTP, FTP ou encore le SMTP. C'est un systeme de message complétement asynchrone et qui permet d'échanger des messages entre des platform different. Par example notre API nodejs pourrait utiliser RabbitMQ pour envoyer un message a un service en java qui s'occupe d'envoyer des mail.
 
-Le serveur peut communiquer à la fois avec un client propre ou bien aux clients inscrits à un channel spécifique ou bien à tous les clients (broadcast).
-
-Pour bien comprendre l'utilisation et le fonctionnement de socket.io ainsi que la différence entre les événements individuels, de room ou en broadcast, vous trouverez, en suivant ce lien, un exemple de créaction d'un tchat : http://socket.io/get-started/chat/.
+Pour bien comprendre l'utilisation et le fonctionnement de RabbitMQ ainsi que la différence entre les types de "topics", vous trouverez, un explicatif avec des illustrations pour mieux comprendre : https://blog.zenika.com/2010/12/19/introduction-a-rabbitmq-amqp/.
 
 ## Mise en pratique au sein d'Hapi
 

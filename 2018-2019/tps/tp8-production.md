@@ -8,7 +8,7 @@
 Il y a différentes façons pour installer son projet en production :
 
 - Publication automatique via un système d'intégration continue
-- Dockeisation et déploiement sur un serveur ou un système d'orchestration
+- Dockeisation et déploiement sur un serveur ou un système d'orchestration (rancher, kubernetes, nomad...)
 - Publication sur un serveur dédié/virtuel, ...
 
 Ici nous allons voir la plus simple à mettre en place : Docker
@@ -46,7 +46,7 @@ RUN npm install --only=prod -d && \
 CMD ["node", "server.js"]
 ```
 
-Pour revenir en détail sur l'iage, que fasons nous :
+Pour revenir en détail sur l'image, que fasons nous :
 
 1. On indique la variable `NODE_ENV` comme étant en production. Quand elle est initiée en production, `npm-install` ne fait que ce qui est noté dans `dependencies` et ignore tout de la partie `devDependencies`.
 2. On initnie l'environnement de notre projet à `production`. Il est conseillé de bien séparer la notion d'environnement Node.JS par rapport au projet que l'on veut lancer.
@@ -85,8 +85,8 @@ Le plus simple si vous voulez tester cette image et avoir une liaison avec votre
 ```
 version '3'
 services:
-  mongo:
-    image: mongo
+  postgres:
+    image: postgres
   hapi:
     image: votrenom/tpnode:untag
     ports:
@@ -94,14 +94,14 @@ services:
     environment:
       - ENVIRONMENT=production
     links:
-      - mongo  
+      - postgres  
 ```
 
 > J'ai volontairement ommis de mettre toutes les variables. À vous de les rajouter dans votre propre fichier.
 
 Normalement si vous exécutez ce projet, vous devriez avoir votre serveur Hapi et mongoDB qui se lancent et communiquent l'un avec l'autre.
 
-Bien entendu, ce fichier n'est pas propre à aller en production. Il faudrait gérer des volumes pour la partie MongoDB pour que, si on coupe docker, les données ne soient pas perdues.
+Bien entendu, ce fichier n'est pas propre à aller en production. Il faudrait gérer des volumes pour la partie PostgreSQL pour que, si on coupe docker, les données ne soient pas perdues.
 
 ## Conclusion
 
@@ -109,4 +109,4 @@ J'espère que ce module de Node.JS vous a plus, que vous avez découverts d'autr
 
 Pour rappel, le devoir est à rendre avant le dimanche 25 Février 20h. Tout commit/push effectué après cette heure sera ignoré. Si jamais vous partagez le lien d'un repo privé, merci de m'en donner les accès.
 
-Pour rappel, envoyez, avec votre nm, le lien vers le repository GIT à l'adresse suivante : benjamin.besse02@gmail.com
+Pour rappel, envoyez, avec votre nm, le lien vers le repository GIT à l'adresse suivante : daniel@dancole.fr

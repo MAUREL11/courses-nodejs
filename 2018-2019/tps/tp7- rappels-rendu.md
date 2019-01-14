@@ -10,15 +10,15 @@ Ex : Tout de suite, vous bossez sur un repository git public. Pour la partie env
 
 - Les variables d'environnement utilisent la norme `CAPITALS` (de la forme `UNE_VAR_EXEMPLE`)
 - En local, vous avez deux façons de les utiliser :
-    1. avant votre commande dans le shell : `MONGO_HOST=localhost:27017;MONGO_NAME=tpnode node server.js`
+    1. avant votre commande dans le shell : `DB_HOST=localhost;DB_NAME=tpnode node server.js`
     2. via votre IDE. Webstorm et VSCode vous permettent de configurer des variables d'environnement pour le lancement de votre projet (mode recommandé)
 - En production :
     - Si vous utilisez Docker, vous renseigner les variables disponibles dans le `DockerFile`. Ensuite vous les initialisez via par exemple le lanceent (`docker run`, `docker-compose.yml`, votre orchestrateur (Rancher, ...))
-    - Si vous étes directement sur un serveur, via les variables d'environnement système (`.bash_profile`, `.bashrc`, ...). Ou alors directement via l'appel de la commande : `MONGO_HOST=localhost:27017;MONGO_NAME=tpnode node server.js`
+    - Si vous étes directement sur un serveur, via les variables d'environnement système (`.bash_profile`, `.bashrc`, ...). Ou alors directement via l'appel de la commande : `DB_HOST=localhost;DB_NAME=tpnode node server.js`
 
 ### Utilisation
 
-Vous pouvez récupérer **toutes** les variables du serveur lançant le projet via le package [`process`](https://nodejs.org/api/process.html) disponible de base dans Node.JS. De là vous pouvez les récupérer via `process.env`. Par exemple, si vous voulez récupérer la valeur de votre variable `MONGO_HOST`, vous avez juste à faire un `process.env.MONGO_HOST`.
+Vous pouvez récupérer **toutes** les variables du serveur lançant le projet via le package [`process`](https://nodejs.org/api/process.html) disponible de base dans Node.JS. De là vous pouvez les récupérer via `process.env`. Par exemple, si vous voulez récupérer la valeur de votre variable `DB_HOST`, vous avez juste à faire un `process.env.DB_HOST`.
 
 <br>
 
@@ -76,14 +76,28 @@ Mais les fonctions asynchrones posent différents problèmes en ce qui concerne 
 Pour les promesses c'est différent. Si on reprend notre exemple de callback Hell, voici ce que ça donnerai en promesse :
 
 ```javascript
-asyncFunc1(params)
-    .then((result) => asyncFunc2(params))
-    .then((result) => asyncFunc3(params))
-    .then((result) => asyncFunc4(params))
-    // ...
-    .catch((err) => {
-        // gestion des exceptions
-    });
+
+try {
+  const result1 = await asyncFunc1(params);
+  const res2 = await asyncFunc2(params);
+  const res3 = await asyncFunc3(params);
+  const res4 = await asyncFunc4(params);
+} catch(err) {
+
+  // gestion d'erreur
+}
+
+
+// peut aussi etre ecrit de cette maniere:
+
+try {
+
+  const [res1, res2, res3, res4] = await Promise.all([asyncFunc1(params), asyncFunc2(params), asyncFunc3(params), asyncFunc4(params)]);
+
+} catch(err){
+
+}
+
 ```
 
 Beaucoup plus simple n'est-ce pas ? Mais comment sont faites les promesses ? Tout simplement comme ceci :
@@ -101,47 +115,9 @@ const maPromise = new Promise((resolve, reject) => {
 })
 ```
 
-La fonction `then` est appelée automatiquement si le `resolve` est appelé dans votre promesse.
-
-<br>
-
-La fonction `catch` est appelée automatiquement si le `reject` est appelé dans votre promesse ou si une exception a été déclenchée dans toute la chaîne de promesses que vous avez.
-
 **Attention à ne surtout pas oublier les `return` pour que tout fonctionne bien**.
 
 Mais `Bluebird` dans tout ça ? Bluebird est juste une autre implémentation des promesses (utilisant la norme de celles disponibles nativement et du coup étant compatibles avec) rajoutant diverses fonctions utilises aux promesses (each, map, ...) facilitant le codage de votre projet.
-
-## Hapi : Plugins et Handlers
-
-Au sein du projet fil rouge, vous avez normalement commencé à travailler avec un plugin propre au projet pour toute la partie utilisateurs. Si je vous fais utiliser un plugin c'est pour plusieurs raisons :
-
-1. Voir par vous même comment un plugin se créer et fonctionne
-2. Modulariser votre code. Ce qui facilite les mises à jour, debug, ... En effet, si vous devez changer de library interne au plugin, de fonctionnement dans une méthode, ... vous avez juste à toucher à ce plugin (parfois au handler).
-
-Pour garder cette séparation entre plugins il faut par contre suivre les règles suivantes :
-
-- Un plugin ne doit pas appeler un autre plugin (hormis ceux propres à la partie log/bdd si besoin)
-- Chaque fonction de votre plugin doit être soit synchrone, soit être une promesse (cette dernière afin de gérer au mieux les erreurs et éviter les Callback Hell)
-- Pour communiquer entre vos plugins, vous devez passer par un handler.
-- La fonction `register` définie au sein d plugin est appelée par Hapi lors du `server.register` et sert à initialiser votre plugin (configuration, méthodes disponibles, création de routes propres, ...)
-
-> Vous trouverez la structure de base des plugins à la fin du TP4
-
-<br><br><br><br><br><br>
-
-Ce qui devrait vous donner, par exemple, la chose suivante dans un handler :
-
-```javascript
-const routeExample = (request, reply) {
-    request.server.plugins.pluginA
-        .findItem({
-            id : request.params.id,
-        })
-        .then(item => request.server.plugins.pluginB.sendItem(item))
-        .then(result => reply(null, result))
-        .catch(err => reply(err));
-}
-```
 
 ## TP Fil rouge : Choses à faire
 
@@ -159,4 +135,4 @@ const routeExample = (request, reply) {
 - Email de regénération du mot de passe
 - Email de modification de l'utilisateur
 
-**La partie socket.io n'est plus à faire**
+** Bonus ** : mail avec RabbitMQ
